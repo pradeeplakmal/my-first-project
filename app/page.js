@@ -20,7 +20,7 @@ export default function Home() {
             </code>
             .
           </li>
-          <li className="text-green-600">My First Evotech Next.js Project .</li>
+          <li className="text-red-700">My First Evotech Next.js Project .</li>
         </ol>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row">
