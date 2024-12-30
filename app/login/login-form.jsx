@@ -6,16 +6,44 @@ import {useState} from "react";
 export default function LoginForm({title}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("")
+  const [passwordError, setPasswordError] = useState("")
+
+  const validateForm = () => {
+    if(!email){
+      setEmailError("Email is required!...");
+      return false;
+    }
+    else{
+      setEmailError("");
+    }
+
+    if(!password){
+      setPasswordError("Password is required!...");
+      return false;
+    }
+    else{
+      setPasswordError("");
+    }
+
+    return true;
+
+  }
   
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => {    
     e.preventDefault();
-    console.log("Form Data", {email: email, password: password});
+    //login form validate
+    const isValid = validateForm();
+    if(isValid){      
+      //login form submission
+      console.log("Form Data", {email: email, password: password});
+    }
   };
 
 
   return (
     <div className="w-[380px] mx-auto bg-gray-200">
-        <div className="p-5 bg-white border border-gray-400 rounded-md shadow-md">
+        <div className="p-8 bg-white border border-gray-400 rounded-md shadow-md">
           <form action="#" onSubmit={handleSubmit} className="space-y-6">
             <h3 className="mb-4 text-xl font-semibold text-center text-gray-800">
               {title}
@@ -36,6 +64,8 @@ export default function LoginForm({title}) {
                 className="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50"
                 placeholder="yourmail@email.com"
               />
+
+              {emailError && <div className="mt-2 ml-1 text-xs text-red-500">{emailError}</div>}
             </div>
             <div>
               <label
@@ -53,6 +83,8 @@ export default function LoginForm({title}) {
                 className="block w-full p-2 text-gray-900 border border-gray-300 rounded-md bg-gray-50"
                 placeholder="••••••••••"
               />
+
+              {passwordError && <div className="mt-2 ml-1 text-xs text-red-500">{passwordError}</div>}
             </div>
             <div className="flex justify-between">
               <div className="flex items-start">
