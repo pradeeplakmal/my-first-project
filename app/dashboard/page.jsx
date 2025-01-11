@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { getMovies } from "../libs/apis/server";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
 
 export default async function DashboardPage() {
   //1. Add shadcn card
@@ -33,25 +34,43 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {moviesQuery?.length &&
             moviesQuery.map((movie) => (
-              <div key={movie._id} className="h-96">
+              <div key={movie._id} className="h-[480px]">
                 <Card className="h-full">
                   <CardHeader>
-                    <CardTitle className="font-bold text-center">
-                      {movie?.title}
+                    <CardTitle className="font-bold">
+                      {movie?.title}{" "}
+                      <span className="text-xs font-normal text-neutral-400">
+                        {" "}
+                        - {movie?.year ?? "N/A"}
+                      </span>
                     </CardTitle>
                     <CardDescription className="sr-only">
                       {movie?.title}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex justify-center bg-black w-full h-[276px] mb-4 rounded">
+                    <div className="flex justify-center bg-black w-full h-[225px] mb-4 rounded">
                       <Image
                         src={movie?.poster}
                         alt={movie?.title}
                         width={200}
                         height={400}
                         className="object-contain w-auto h-full"
+                        priority="true"
                       />
+                    </div>
+                    <div className="flex flex-col justify-between h-[154px]">
+                      {/* Movie plot */}
+                      <p className="text-xs line-clamp-3">{movie?.plot}</p>
+                      {/* movie Genres */}
+                      <div className="text-sm font-semibold text-blue-700">
+                        {movie?.genres?.length && movie?.genres?.join(" / ")}
+                      </div>
+                      <div>
+                        <Badge variant="success">
+                          Rated: {movie.rated ?? "N/A"}
+                        </Badge>
+                      </div>
                     </div>
                   </CardContent>
                   <CardFooter></CardFooter>
