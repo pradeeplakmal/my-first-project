@@ -9,6 +9,7 @@ import {
 import { getMovies } from "../libs/apis/server";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { FaStar } from "react-icons/fa";
 
 export default async function DashboardPage() {
   //1. Add shadcn card
@@ -66,10 +67,20 @@ export default async function DashboardPage() {
                       <div className="text-sm font-semibold text-blue-700">
                         {movie?.genres?.length && movie?.genres?.join(" / ")}
                       </div>
-                      <div>
+                      <div
+                        className="flex flex-row items-center justify-between"
+                        title="IMDb Rating"
+                      >
                         <Badge variant="success">
                           Rated: {movie.rated ?? "N/A"}
                         </Badge>
+                        <div className="flex flex-row items-center gap-2">
+                          <FaStar className="text-yellow-500" />
+                          <span className="text-sm font-semibold">
+                            {" "}
+                            {movie?.imdb?.rating ?? 0}/10
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
