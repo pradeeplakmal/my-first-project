@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useState } from "react";
+import { registerUser } from "@/app/libs/apis/server";
 
 const DEFAULT_ERROR = {
   error: false,
@@ -21,25 +23,34 @@ const DEFAULT_ERROR = {
 //Keep this as the client component (functional component
 export default function RegisterForm() {
   const [error, setError] = useState(DEFAULT_ERROR);
+  const [isLoading, setLoading] = useState(false);
 
   const handleSubmitForm = async (event) => {
     event?.preventDefault();
 
     const formData = new FormData(event?.currentTarget);
-    const name = formData.get("name") ?? "";
-    const email = formData.get("email") ?? "";
-    const password = formData.get("password") ?? "";
+    const name = formData.get("name").toString();
+    const email = formData.get("email").toString();
+    const password = formData.get("password").toString();
     const confirmPassword = formData.get("confirm-password") ?? "";
     // console.log("submitted!", { name, email, password, confirmPassword });
 
+    //Basic validation logic
     if (name && email && password && confirmPassword) {
       if (password === confirmPassword) {
         setError(DEFAULT_ERROR);
+
+        setLoading(true);
+        const registerResp = await registerUser({ name, email, password });
+        setLoading(false);
+        if (registerResp?.error) {
+          setError({ error: true, message: registerResp.error });
+        }
       } else {
         setError({ error: true, message: "Password doesn't match..." });
       }
     }
-    console.log("Error!", error);
+    //console.log("Error!", error);
   };
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -101,7 +112,8 @@ export default function RegisterForm() {
           </CardContent>
 
           <CardFooter className="flex justify-center">
-            <Button className="flex-1" type="submit">
+            <Button className="flex-1" type="submit" disabled={isLoading}>
+              {isLoading && <Loader2 className="animate-spin" />}
               Register
             </Button>
           </CardFooter>

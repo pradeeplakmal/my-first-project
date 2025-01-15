@@ -13,6 +13,29 @@ export const loginUser = async (loginData) => {
   console.log("LOGIN ACTION", response.json());
 };
 
+//Register server action
+export const registerUser = async (FormData) => {
+  try {
+    const response = await api.post("register", { json: FormData });
+
+    if (response.ok) {
+      return response.json();
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    const status = error.response.status;
+    const responseBody = await error.response.json();
+    if (status && responseBody) {
+      if (status === 409) {
+        return responseBody;
+      }
+      return undefined;
+    }
+    return undefined;
+  }
+};
+
 //Get Movies
 export const getMovies = async () => {
   try {
