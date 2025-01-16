@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { registerUser } from "@/app/libs/apis/server";
+import { registerUser } from "@/lib/apis/server";
 
 const DEFAULT_ERROR = {
   error: false,

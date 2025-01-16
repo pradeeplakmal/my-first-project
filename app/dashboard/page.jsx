@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getMovies } from "../libs/apis/server";
+import { getMovies } from "../../lib/apis/server";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { FaStar } from "react-icons/fa";

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/app/libs/apis/mongodb";
+import clientPromise from "@/lib/mongodb";
 import bcrypt from "bcrypt";
 
 export const POST = async (req) => {
