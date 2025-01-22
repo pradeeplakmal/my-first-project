@@ -15,8 +15,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { registerUser } from "@/lib/apis/server";
+// import { ToastAction } from "@/components/ui/toast";
+// import { registerUser } from "@/lib/apis/server";
+import { signUp } from "@/lib/auth-client";
 
 const DEFAULT_ERROR = {
   error: false,
@@ -39,31 +40,58 @@ export default function RegisterForm() {
     // console.log("submitted!", { name, email, password, confirmPassword });
 
     //Basic validation logic
-    if (name && email && password && confirmPassword) {
-      if (password === confirmPassword) {
-        setError(DEFAULT_ERROR);
+    //if (name && email && password && confirmPassword) {
+    if (password === confirmPassword) {
+      setError(DEFAULT_ERROR);
 
-        setLoading(true);
-        const registerResp = await registerUser({ name, email, password });
-        setLoading(false);
-        if (registerResp?.error) {
-          setError({ error: true, message: registerResp.error });
-        } else {
-          toast({
-            variant: "success",
-            title: "Registration successful...",
-            description: "Please continue with login...",
-            action: (
-              <ToastAction altText="Login" className="hover:bg-green-800">
-                Login
-              </ToastAction>
-            ),
-          });
+      // setLoading(true);
+      // const registerResp = await registerUser({ name, email, password });
+      // setLoading(false);
+      // if (registerResp?.error) {
+      //   setError({ error: true, message: registerResp.error });
+      // } else {
+      //   toast({
+      //     variant: "success",
+      //     title: "Registration successful...",
+      //     description: "Please continue with login...",
+      //     action: (
+      //       <ToastAction altText="Login" className="hover:bg-green-800">
+      //         Login
+      //       </ToastAction>
+      //     ),
+      //   });
+      // }
+
+      const { data, error } = await signUp.email(
+        {
+          email: email,
+          password: password,
+          name: name,
+          image: undefined,
+        },
+        {
+          onRequest: () => {
+            //console.log("onSuccess", ctx);
+          },
+
+          onSuccess: (ctx) => {
+            console.log("onSuccess", ctx);
+          },
+          onError: (ctx) => {
+            if (ctx) {
+              setError({ error: true, message: ctx.error.message });
+            }
+          },
         }
-      } else {
-        setError({ error: true, message: "Password doesn't match..." });
+      );
+
+      if (data) {
+        console.log("data", data);
       }
+    } else {
+      setError({ error: true, message: "Password doesn't match..." });
     }
+    //}
     //console.log("Error!", error);
   };
   return (
@@ -110,7 +138,7 @@ export default function RegisterForm() {
 
               <div className="flex justify-center">
                 {error?.error && (
-                  <span className="text-xs text-center text-red-600">
+                  <span className="text-xs text-center text-red-600 animate-pulse duration-1000">
                     {error.message}
                   </span>
                 )}
