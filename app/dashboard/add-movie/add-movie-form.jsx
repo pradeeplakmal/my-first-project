@@ -43,7 +43,7 @@ export default function AddMovieForm() {
     const plot = formData.get("plot").toString();
 
     if (title && year && plot && rated) {
-      console.log({ title, year, plot, rated, genres });
+      //console.log({ title, year, plot, rated, genres });
       setLoading(true);
       await createMovie({ title, year, plot, rated, genres });
       setLoading(false);
