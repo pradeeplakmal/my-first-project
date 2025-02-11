@@ -24,12 +24,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/multi-select";
 import { GENRES, RATINGS } from "@/lib/constants";
 import { createMovie } from "@/lib/actions/movie";
+import { useToast } from "@/hooks/use-toast";
 
 //client component
 export default function AddMovieForm() {
   const [genres, setGenres] = useState([]);
   const [rated, setRated] = useState("");
   const [isLoading, setLoading] = useState("");
+  const { toast } = useToast();
+
   const genresList = GENRES.map((genre) => ({
     label: genre,
     value: genre,
@@ -40,13 +43,28 @@ export default function AddMovieForm() {
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title")?.toString();
     const year = formData.get("year");
-    const plot = formData.get("plot").toString();
+    const plot = formData.get("plot")?.toString();
+    const poster = formData.get("poster")?.toString();
 
-    if (title && year && plot && rated) {
+    if (title && year && plot && rated && poster) {
       //console.log({ title, year, plot, rated, genres });
       setLoading(true);
-      await createMovie({ title, year, plot, rated, genres });
+      const resp = await createMovie({
+        title,
+        year,
+        plot,
+        rated,
+        genres,
+        poster,
+      });
       setLoading(false);
+      if (resp.success) {
+        toast({
+          variant: "success",
+          title: "movie Added",
+          description: "Movie was added to MFlix database",
+        });
+      }
     }
   };
 
@@ -110,9 +128,20 @@ export default function AddMovieForm() {
               </SelectContent>
             </Select>
           </div>
+
+          <div>
+            <Label htmlFor="poster">Poster URL</Label>
+            <Input
+              id="poster"
+              name="poster"
+              type="text"
+              defaultValue="https://m.media-amazon.com/images/M/MV5BODcxMzY3OD…Ml5BanBnXkFtZTgwNzg1NDY4MTE@._V1_FMjpg_UX758_.jpg"
+              placeholder="Enter the poster URL"
+            />
+          </div>
         </CardContent>
 
-        <CardFooter className="w-full flex justify-end space-x-2">
+        <CardFooter className="flex justify-end w-full space-x-2">
           <Button type="reset" variant="outline">
             Clear Form
           </Button>
