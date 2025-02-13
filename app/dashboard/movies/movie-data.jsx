@@ -12,7 +12,7 @@ export default async function MovieData() {
       .collection("movies-n")
       .find({})
       .sort({ metacritic: -1 })
-      .limit(10)
+      .limit(50)
       .toArray();
 
     if (moviesQuery) {
