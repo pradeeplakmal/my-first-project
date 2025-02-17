@@ -13,23 +13,26 @@ import {
   ComboboxTrigger,
 } from "@/components/ui/combobox";
 
-export function MultiSelect({ list, label, placeholder, onValueChange }) {
-  const [value, setValue] = useState([]);
-
+export function MultiSelect({
+  list,
+  label,
+  placeholder,
+  selectedItems,
+  onValueChange,
+}) {
   return (
     <Combobox
-      value={value}
+      value={selectedItems}
       onValueChange={(val) => {
-        setValue(val);
         onValueChange(val);
       }}
       className="w-full"
       multiple
     >
       {label && <ComboboxLabel>{label}</ComboboxLabel>}
-      <ComboboxAnchor className="h-full min-h-10 flex-wrap px-3 py-2">
+      <ComboboxAnchor className="flex-wrap h-full px-3 py-2 min-h-10">
         <ComboboxBadgeList>
-          {value.map((item) => {
+          {selectedItems.map((item) => {
             const option = list.find((trick) => trick.value === item);
             if (!option) return null;
 
@@ -46,10 +49,10 @@ export function MultiSelect({ list, label, placeholder, onValueChange }) {
         </ComboboxBadgeList>
         <ComboboxInput
           placeholder={placeholder}
-          className="h-auto min-w-32 flex-1 mr-5"
+          className="flex-1 h-auto mr-5 min-w-32"
         />
         <ComboboxTrigger className="absolute top-3 right-2">
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="w-4 h-4" />
         </ComboboxTrigger>
       </ComboboxAnchor>
       <ComboboxContent>

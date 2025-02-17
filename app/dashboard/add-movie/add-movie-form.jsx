@@ -44,6 +44,7 @@ export default function AddMovieForm() {
     const title = formData.get("title")?.toString();
     const year = formData.get("year");
     const plot = formData.get("plot")?.toString();
+    const imdb = Number(formData.get("imdb"));
     const poster = formData.get("poster")?.toString();
 
     if (title && year && plot && rated && poster) {
@@ -56,6 +57,7 @@ export default function AddMovieForm() {
         rated,
         genres,
         poster,
+        imdb: { rating: imdb },
       });
       setLoading(false);
       if (resp.success) {
@@ -109,6 +111,7 @@ export default function AddMovieForm() {
             <MultiSelect
               list={genresList}
               placeholder="Select movie genres"
+              selectedItems={genres}
               onValueChange={setGenres}
             />
           </div>
@@ -127,6 +130,17 @@ export default function AddMovieForm() {
                 ))}
               </SelectContent>
             </Select>
+          </div>
+          <div>
+            <Label htmlFor="imdb">IMDb Rating</Label>
+            <Input
+              id="imdb"
+              name="imdb"
+              type="number"
+              max="10.0"
+              step="0.1"
+              placeholder="Enter imdb rating"
+            />
           </div>
 
           <div>
