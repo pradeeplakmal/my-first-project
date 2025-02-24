@@ -26,7 +26,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelect } from "@/components/multi-select";
 import { GENRES, RATINGS } from "@/lib/constants";
 
-export default function EditMovieForm({ movie, open, onCancel, isLoading }) {
+export default function EditMovieForm({
+  movie,
+  open,
+  onSubmit,
+  onCancel,
+  isLoading,
+}) {
   const [title, setTitle] = useState(movie?.title);
   const [year, setYear] = useState(movie?.year);
   const [plot, setPlot] = useState(movie?.plot);
@@ -42,8 +48,19 @@ export default function EditMovieForm({ movie, open, onCancel, isLoading }) {
     value: genre,
   }));
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
     //Save the updated movie data to the database
+    onSubmit({
+      ...movie,
+      title,
+      year,
+      plot,
+      genres,
+      poster,
+      rated,
+      imdb: { rating: imdbRating },
+    });
   };
   return (
     <Dialog open={open} onOpenChange={onCancel}>

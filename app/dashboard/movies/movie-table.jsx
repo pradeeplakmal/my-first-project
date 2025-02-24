@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -11,13 +12,36 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import EditMovieForm from "./edit-movie-form";
+import { updateMovie } from "@/lib/actions/movie";
 
 export default function MovieTable({ movies }) {
+  const [isSaving, setIsSaving] = useState(false);
   const [editingMovie, setEditingMovie] = useState(null);
   const [deletingMovie, setDeletingMovie] = useState(null);
+  const router = useRouter();
 
   const handleEdit = (movie) => {
     setEditingMovie(movie);
+  };
+
+  const handleEditSubmit = async (movie) => {
+    //JS ES6 Destructuring
+    const { id, title, year, plot, rated, genres, poster, imdb } = movie;
+    setIsSaving(true);
+    const resp = await updateMovie(id, {
+      title,
+      year,
+      plot,
+      rated,
+      genres,
+      poster,
+      imdb,
+    });
+    setIsSaving(false);
+    if (resp?.success) {
+      setEditingMovie(null);
+      router.refresh();
+    }
   };
 
   const handleDelete = (movie) => {
@@ -76,8 +100,9 @@ export default function MovieTable({ movies }) {
         <EditMovieForm
           movie={editingMovie}
           open={true}
+          onSubmit={handleEditSubmit}
           onCancel={() => setEditingMovie(null)}
-          isLoading={true}
+          isLoading={isSaving}
         />
       )}
     </div>

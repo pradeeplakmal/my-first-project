@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { db } from "@/lib/mongodb";
 import bcrypt from "bcrypt";
 
 export const POST = async (req) => {
@@ -13,10 +13,6 @@ export const POST = async (req) => {
         { status: 400 }
       );
     }
-    const client = await clientPromise();
-    //sample_mflix is the database name
-    const db = client.db("sample_mflix");
-
     //db eka user kenek innawada kiyala mail eken check karanawa.
     const existingUser = await db.collection("users").findOne({ email });
 
