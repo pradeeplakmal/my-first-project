@@ -15,6 +15,8 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import { LayoutDashboard } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function MoviesPublicPage() {
   //1. Add shadcn card
   //2. Create Movies GET endpoint

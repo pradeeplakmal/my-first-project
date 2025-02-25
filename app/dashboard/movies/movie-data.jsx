@@ -3,6 +3,9 @@ import MovieTable from "./movie-table";
 
 //Movie data server component
 //Server action call directly to mongodb
+
+export const revalidate = 60; // revalidate at most every 60 seconds
+
 export default async function MovieData() {
   try {
     const moviesQuery = await db

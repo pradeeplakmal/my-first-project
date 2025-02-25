@@ -14,7 +14,6 @@ export default function DeleteMovieDialog({
   movie,
   onConfirm,
   onCancel,
-
   isLoading,
 }) {
   return (
