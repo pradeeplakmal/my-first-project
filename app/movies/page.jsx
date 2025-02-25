@@ -26,7 +26,7 @@ export default async function MoviesPublicPage() {
   console.log("Mflix Movies", moviesQuery);
 
   return (
-    <div className="container overflow-auto my-12 space-y-4">
+    <div className="container my-12 space-y-4">
       <div className="flex flex-row items-center justify-between">
         <h1 className="text-3xl font-bold text-green-800">Browse Movies</h1>
         <Link href="../dashboard/movies">
